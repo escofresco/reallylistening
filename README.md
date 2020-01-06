@@ -1,4 +1,4 @@
-# reallylistening
+# really listening
 
 really listening is an easy-to-use app for transcribing and analysing spoken recordings.
 
