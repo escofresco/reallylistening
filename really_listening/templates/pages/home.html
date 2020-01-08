@@ -5,44 +5,66 @@
 {% endblock css %}
 
 {% block content %}
-<p>
-    asdfkjahdf
-</p>
-<p>
-    asdfkjahdf
-</p>
-<p>
-    asdfkjahdf
-</p>
-<p>
-    asdfkjahdf
-</p>
-<p>
-    asdfkjahdf
-</p>
+
 <div id="drag-drop-area"></div>
+
+<form id="emptyForm" action="/" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">submit</button>
+</form>
 {% endblock content %}
 
 {% block javascript %}
 {{ block.super }}
 <script src="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.js"></script>
 <script>
+
+var socket = new WebSocket('ws://' + window.location.host + '/');
+
+socket.onopen = function open() {
+  console.log('WebSockets connection created.');
+};
+
+if (socket.readyState == WebSocket.OPEN) {
+  socket.onopen();
+}
+
+
+$("#emptyForm").submit(function (event) {
+    event.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: form.serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+               alert(data.foo); // show response from the php script.
+           }
+    });
+});
+
+
 var uppy = Uppy.Core()
-    .use(Uppy.Dashboard, {
+uppy.use(Uppy.Dashboard, {
         inline: true,
         target: '#drag-drop-area'
-    })
-    .use(Transloadit, {
-        service: 'https://api2.transloadit.com',
-        params: null,
-        waitForEncoding: false,
-        waitForMetadata: false,
-        importFromUploadURLs: false,
-        alwaysRunAssembly: false,
-        signature: null,
-        fields: {},
-        limit: 0
-    });
+});
+
+// uppy.use(Uppy.Transloadit, {
+//         service: 'https://api2.transloadit.com',
+//         params: null,
+//         waitForEncoding: false,
+//         waitForMetadata: false,
+//         importFromUploadURLs: false,
+//         alwaysRunAssembly: false,
+//         signature: null,
+//         fields: {},
+//         limit: 0
+// });
 
 uppy.on('complete', (result) => {
     console.log('Upload complete! We’ve uploaded these files:', result.successful)

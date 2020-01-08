@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from .forms import EmptyForm
 from .tasks import add
 
+
 class HomeView(TemplateView):
     template_name = "pages/home.html"
     form_class = EmptyForm

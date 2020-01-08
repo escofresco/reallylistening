@@ -6,7 +6,8 @@ from .views import HomeView
 urlpatterns = [
     # home page
     path("", HomeView.as_view(), name="home"),
-
     # about page
-    path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
+    path(
+        "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
+    ),
 ]
