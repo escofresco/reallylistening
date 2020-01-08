@@ -1,1 +1,51 @@
 {% extends "base.html" %}
+{% block css %}
+{{ block.super }}
+<link href="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.css" rel="stylesheet">
+{% endblock css %}
+
+{% block content %}
+<p>
+    asdfkjahdf
+</p>
+<p>
+    asdfkjahdf
+</p>
+<p>
+    asdfkjahdf
+</p>
+<p>
+    asdfkjahdf
+</p>
+<p>
+    asdfkjahdf
+</p>
+<div id="drag-drop-area"></div>
+{% endblock content %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.js"></script>
+<script>
+var uppy = Uppy.Core()
+    .use(Uppy.Dashboard, {
+        inline: true,
+        target: '#drag-drop-area'
+    })
+    .use(Transloadit, {
+        service: 'https://api2.transloadit.com',
+        params: null,
+        waitForEncoding: false,
+        waitForMetadata: false,
+        importFromUploadURLs: false,
+        alwaysRunAssembly: false,
+        signature: null,
+        fields: {},
+        limit: 0
+    });
+
+uppy.on('complete', (result) => {
+    console.log('Upload complete! We’ve uploaded these files:', result.successful)
+})
+</script>
+{% endblock javascript %}
