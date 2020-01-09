@@ -288,3 +288,5 @@ really_listening/media/
 .env
 .envs/*
 !.envs/.local/
+
+dump.rdb
