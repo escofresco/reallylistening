@@ -4,7 +4,7 @@ from celery import shared_task
 
 import threading
 
-@app.task
+@shared_task
 def add(x, y):
     threading.Event().wait(5)
     return x + y
