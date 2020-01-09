@@ -65,13 +65,13 @@ DJANGO_APPS = [
     "django.contrib.admin",
 ]
 THIRD_PARTY_APPS = [
+    "channels",
     "crispy_forms",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "rest_framework",
     "django_celery_beat",
-    "channels",
 ]
 
 LOCAL_APPS = [
@@ -284,6 +284,14 @@ ACCOUNT_ADAPTER = "really_listening.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "really_listening.users.adapters.SocialAccountAdapter"
 
+# Channels
+ASGI_APPLICATION = 'listen.routing.application'
 
-# Your stuff...
-# ------------------------------------------------------------------------------
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
