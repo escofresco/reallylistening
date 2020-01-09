@@ -30,7 +30,6 @@ class ListenedView(TemplateView):
         return render(request, self.template_name, {'task_id': task_id})
 
     def post(self, request, *args, **kwargs):
-        return JsonResponse({'ready': True})
         if 'task_id' in request.POST:
             async_res = add.AsyncResult(request.POST['task_id'])
 
