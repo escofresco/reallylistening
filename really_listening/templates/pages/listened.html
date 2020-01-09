@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block javascript %}
+{{ block.super }}
+<script>
+    (function poll() {
+        $.ajax({
+            type: "POST",
+            url: "/{{ task_id }}",
+            data: {
+                task_id: "asdfs", //"{{ task_id }}",
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            success: function(d) {
+                if (d.ready) {
+                    console.log("ready");
+                    console.log(d.res);
+                } else {
+                    console.log(d);
+                    console.log("not ready");
+                    //setTimeout(poll(), 5000);
+                }
+            }
+        });
+    })();
+</script>
+{% endblock javascript %}
