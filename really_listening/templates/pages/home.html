@@ -2,6 +2,7 @@
 {% block css %}
 {{ block.super }}
 <link href="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//transloadit.edgly.net/releases/uppy/robodog/v1.4.1/robodog.min.css">
 {% endblock css %}
 
 {% block content %}
@@ -23,11 +24,12 @@
 {% block javascript %}
 {{ block.super }}
 <script src="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.js"></script>
+<script src="//transloadit.edgly.net/releases/uppy/robodog/v1.4.1/robodog.min.js"></script>
 <script>
 /*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Channels    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  */
-    
+
     var roomName = "{{ room_name|escapejs }}";
 
     var chatSocket = new WebSocket(
