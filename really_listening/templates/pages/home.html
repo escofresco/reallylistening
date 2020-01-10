@@ -7,6 +7,8 @@
 
 {% block content %}
 <button id="browse">Select Files</button>
+
+{% comment %}
 <div id="drag-drop-area"></div>
 
 <form id="emptyForm" action="/" method="post">
@@ -15,10 +17,11 @@
     <button type="submit">submit</button>
 </form>
 
+
 <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
 <input id="chat-message-input" type="text" size="100"/><br/>
 <input id="chat-message-submit" type="button" value="Send"/>
-
+{% endcomment %}
 {% endblock content %}
 
 {% block javascript %}
@@ -28,14 +31,14 @@
 <script>
 
     /* ajax stuff */
-    $('#emptyForm').submit(function (event) {
+    $("#emptyForm").submit(function (event) {
         event.preventDefault();
         $.ajax({
-            type: 'POST',
-            url: '/',
+            type: "POST",
+            url: "/",
             data: {
                 file_url: "asf",
-                csrfmiddlewaretoken: '{{ csrf_token }}',
+                csrfmiddlewaretoken: "{{ csrf_token }}",
             },
             success: function(data) {
                 window.location.href += data.task_id;
@@ -43,19 +46,34 @@
         });
     });
 
+    function startListening(furl) {
+        $.ajax({
+            type: "POST",
+            url: "/",
+            data: {
+                file_url: furl,
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            success: function(data) {
+                // Once the task is started, redirect to results page
+                window.location.href += data.task_id;
+            }
+        });
+    }
+
 
     /*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             TRANSLOADIT
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-    document.getElementById('browse').addEventListener('click', function () {
+    document.getElementById("browse").addEventListener("click", function () {
         var uppy = window.Robodog.pick({
-            providers: [ 'instagram', 'url', 'webcam', 'dropbox', 'google-drive' ],
+            providers: [ "instagram", "url", "webcam", "dropbox", "google-drive" ],
             waitForEncoding: true,
             params: {
                 // TODO: Use Signature Authentication
-                auth: { key: '20ff383b0b2b49a79643d1874edf5a3f' },
-                template_id: 'd90b12519a964166ac0aac71b53fc4e0'
+                auth: { key: "20ff383b0b2b49a79643d1874edf5a3f" },
+                template_id: "d90b12519a964166ac0aac71b53fc4e0"
             }
         }).then(function (bundle) {
             // Due to `waitForEncoding: true` this is fired after encoding is done.
@@ -64,7 +82,9 @@
             // so that your user can be on their way as soon as the upload completes.
             console.log(bundle.transloadit) // Array of Assembly Statuses
             console.log(bundle.results)     // Array of all encoding results
-            startListening(bundle.url);
+
+            // start. that. pipeliiiiinnneee!
+            startListening(bundle.results[0].ssl_url);
         }).catch(console.error)
     })
 </script>

@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block content %}
+<p id="content">
+afaskdjfhslkjh
+</p>
+{% endblock content %}
+
 {% block javascript %}
 {{ block.super }}
 <script>
@@ -11,12 +17,13 @@
                 task_id: "{{ task_id }}",
                 csrfmiddlewaretoken: "{{ csrf_token }}",
             },
-            success: function(d) {
-                if (d.ready) {
+            success: function(data) {
+                if (data.ready) {
                     console.log("ready");
-                    console.log(d.res);
+                    console.log(data.res);
+                    $("#content").text(data.textcontent)
                 } else {
-                    console.log(d);
+                    console.log(data);
                     console.log("not ready");
                     setTimeout(poll, 5000);
                 }
