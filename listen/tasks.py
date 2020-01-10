@@ -4,23 +4,33 @@ from config.celery_app import app
 from celery import shared_task
 from .helpers import *
 
-import time
-
 
 @shared_task
-def add(x, y):
-    threading.Event().wait(5)
-    return x + y
+def start_listening(file_url):
+    '''Transcribes a file by its location in S3 and then applies AWS Comprehend
+    actions to the transcript.
 
+    Args:
+        filename: The full url to an audio file in S3.
 
-@shared_task
-def start_listening(filename):
-    transcribe_res = transcribe(filename)
+    Returns:
+        {
+            'text_content': str,
+            'language': str,
+            'sentiment': str,
+        }
+    '''
+    transcribe_res = transcribe(file_url)
     job = transcribe_res["TranscriptionJob"]
+
     if job["TranscriptionJobStatus"] == "FAILED":
         raise Exception("Transcript failed to complete")
     transcribe_uri = job["Transcript"]["TranscriptFileUri"]
     transcript_res = load_json_from_uri(transcribe_uri)
     content = transcript_res["results"]["transcripts"][0]["transcript"]
 
-    return content
+    comprehend_res = comprehend(content)
+    return {
+        'text_content': content,
+        **comprehend_res
+        }
