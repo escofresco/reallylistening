@@ -253,7 +253,9 @@ if USE_TZ:
     # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-timezone
     CELERY_TIMEZONE = TIME_ZONE
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-broker_url
-CELERY_BROKER_URL = env("REDIS_URL", default="redis://localhost:6379/0") #env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
+CELERY_BROKER_URL = env(
+    "REDIS_URL", default="redis://localhost:6379/0"
+)  # env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-result_backend
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-accept_content
@@ -285,13 +287,11 @@ ACCOUNT_ADAPTER = "really_listening.users.adapters.AccountAdapter"
 SOCIALACCOUNT_ADAPTER = "really_listening.users.adapters.SocialAccountAdapter"
 
 # Channels
-ASGI_APPLICATION = 'listen.routing.application'
+ASGI_APPLICATION = "listen.routing.application"
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [("127.0.0.1", 6379)],},
     },
 }
