@@ -39,7 +39,14 @@ def transcribe(job_uri):
 
 
 def comprehend(text):
-    '''Wrapper for AWS Comprehend API'''
+    '''Wrapper for AWS Comprehend API.
+
+    Returns:
+        {
+            'language': str,
+            'sentiment': str,
+        }
+    '''
     comprehend = boto3.client(
         'comprehend',
         aws_access_key_id=os.getenv('DJANGO_AWS_ACCESS_KEY_ID'),
