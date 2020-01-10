@@ -16,8 +16,7 @@
             data: {
                 task_id: "{{ task_id }}",
                 csrfmiddlewaretoken: "{{ csrf_token }}",
-            },
-            success: function(data) {
+            }, success: function(data) {
                 if (data.ready) {
                     console.log("ready");
                     console.log(data.res);
@@ -27,6 +26,8 @@
                     console.log("not ready");
                     setTimeout(poll, 5000);
                 }
+            }, error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $("#content").text("Status " + textStatus + " Error: " + errorThrown);
             }
         });
     })();
