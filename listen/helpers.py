@@ -50,7 +50,7 @@ def comprehend(text):
     comprehend = boto3.client(
         'comprehend',
         aws_access_key_id=os.getenv('DJANGO_AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key=os.getenv('DJANGO_SECRET_ACCESS_KEY'),
+        aws_secret_access_key=os.getenv('DJANGO_AWS_SECRET_ACCESS_KEY'),
         region_name='us-west-2',
     )
     job_name = str(uuid.uuid4())
