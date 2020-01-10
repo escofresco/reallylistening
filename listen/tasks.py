@@ -16,11 +16,11 @@ def add(x, y):
 @shared_task
 def start_listening(filename):
     transcribe_res = transcribe(filename)
-    job = transcribe_res['TranscriptionJob']
-    if job['TranscriptionJobStatus'] == 'FAILED':
-        raise Exception('Transcript failed to complete')
-    transcribe_uri = job['Transcript']['TranscriptFileUri']
+    job = transcribe_res["TranscriptionJob"]
+    if job["TranscriptionJobStatus"] == "FAILED":
+        raise Exception("Transcript failed to complete")
+    transcribe_uri = job["Transcript"]["TranscriptFileUri"]
     transcript_res = load_json_from_uri(transcribe_uri)
-    content = transcript_res['results']['transcripts'][0]['transcript']
+    content = transcript_res["results"]["transcripts"][0]["transcript"]
 
     return content

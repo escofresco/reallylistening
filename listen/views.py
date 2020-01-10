@@ -20,9 +20,7 @@ class HomeView(TemplateView):
         if "file_url" in request.POST:
             # start a worker task for processing file located at file_url
             res = start_listening.apply_async(
-                (request.POST["file_url"],),
-                time_limit=60 * 20,
-                soft_time_limit=60 * 15
+                (request.POST["file_url"],), time_limit=60 * 20, soft_time_limit=60 * 15
             )
             return JsonResponse({"task_id": res.id})
 
