@@ -1,14 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p id="content">
+<div id="results">
     loading...
-</p>
+</div>
 {% endblock content %}
 
 {% block javascript %}
 {{ block.super }}
 <script>
+    function formatListenedResults(data) {
+        formatted_elms = [];
+        formatted_elms.push(`<h6>Sentiment: ${data["sentiment"]}</h6>`);
+        formatted_elms.push(`<h6>Language: ${data["language"]}</h6>`);
+        formatted_elms.push(`<p>${data["text_content"]}</p>`);
+        return formatted_elms.join("")
+    }
+
     (function poll() {
         $.ajax({
             type: "POST",
@@ -19,15 +27,15 @@
             }, success: function(data) {
                 if (data.ready) {
                     console.log("ready");
-                    console.log(data.res);
-                    $("#content").text(data.textcontent)
+                    console.log(data);
+                    $("#results").html(formatListenedResults(data))
                 } else {
                     console.log(data);
                     console.log("not ready");
                     setTimeout(poll, 5000);
                 }
             }, error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $("#content").text("Status " + textStatus + " Error: " + errorThrown);
+                $("#results").text("Status " + textStatus + " Error: " + errorThrown);
             }
         });
     })();
