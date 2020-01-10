@@ -41,5 +41,5 @@ class ListenedView(TemplateView):
             async_res = start_listening.AsyncResult(request.POST["task_id"])
 
             if async_res.ready():
-                return JsonResponse({"ready": True, "textcontent": async_res.get()})
+                return JsonResponse({"ready": True, **async_res.get()})
             return JsonResponse({"ready": False})
