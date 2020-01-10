@@ -1,0 +1,18 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: beatrixantiqua-semibold
+font link: https://www.fontspring.com/fonts/zetafonts/beatrix-antiqua/beatrix-antiqua-semi-bold
+font author: Zetafonts
+font author site: https://www.zetafonts.com/
+
+
+icon designer: Jakob Vogel
+icon designer link: /jakobvogel
+        
+
+fontColor: {"hex":"#335eea"}
+bgColor: {"hex":"#FFFFFF"}
+iconColor: {"hex":"#335eea"}
+
+      

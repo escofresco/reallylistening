@@ -1,12 +1,100 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="results">
-    loading...
-</div>
+
+{# HEADER ================================================== #}
+<section class="pt-8 pt-md-11">
+  <div class="container">
+    <div class="row justify-content-center">
+        <div id="spinner" class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <p class="lead mt-7 mb-1 text-center">
+            here. we. go.
+          </p>
+        </div>
+      <div id="results" style="display:none;" class="col-12 col-md-10 col-lg-9 col-xl-8">
+
+
+        {# Heading #}
+        <h1 style="display:none;" id="title" class="display-4 text-center">
+          Remote Work is the Future, but Should You Go Remote?
+        </h1>
+
+        {# Text #}
+        <p class="lead mb-7 text-center text-muted">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec condimentum quam. Fusce pellentesque faucibus lorem at viverra. Integer at feugiat odio. In placerat euismod risus proin.
+        </p>
+
+        {# Meta #}
+        <div class="row align-items-center py-5 border-top border-bottom">
+          <div class="col-auto">
+              {# Sentiment #}
+              <h6 id="sentiment" class="text-uppercase mb-0">
+                Sentiment: Positive
+              </h6>
+          </div>
+          <div class="col ml-n5" style="display: hidden;">
+
+            {# Sentiment #}
+            <h6 class="text-uppercase mb-0">
+              Sentiment: Positive
+            </h6>
+          </div>
+          <div class="col-auto">
+              {# Sentiment #}
+              <h6 id="language" class="text-uppercase mb-0">
+                Sentiment: Positive
+              </h6>
+          </div>
+        </div>
+
+      </div>
+    </div> {# / .row #}
+  </div> {# / .container #}
+</section>
+
+{# SECTION ================================================== #}
+<section class="pt-6 pt-md-8">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div style="display: none;" id="text-results" class="col-12 col-md-10 col-lg-9 col-xl-8">
+
+        {# Text #}
+        <p id="content-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi reiciendis odio perferendis libero saepe voluptatum fugiat dolore voluptates aut, ut quas doloremque quo ad quis ipsum molestias neque pariatur commodi.
+        </p>
+        <p class="mb-0">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, quidem, earum! Quo fugiat voluptates similique quidem dolorem ex non quibusdam odio suscipit error, maiores, itaque blanditiis vel, sed, cum velit?
+        </p>
+
+      </div>
+    </div> {# / .row #}
+  </div> {# / .container #}
+</section>
+
+{# ~~~~~~~~~~~~~~~~~ SPACING SECTION ~~~~~~~~~~~~~~~~~~~~~~ #}
+<section class="mt-n8">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="50">
+
+            </div>
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <br><br><br><br><br><br><br><br>
+            </div>
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="150">
+
+
+            </div>
+        </div> {# / row #}
+    </div> {# / container #}
+</section>
+
 {% endblock content %}
 
-{% block javascript %}
+{% block scripts %}
 {{ block.super }}
 <script>
     function formatListenedResults(data) {
@@ -28,7 +116,13 @@
                 if (data.ready) {
                     console.log("ready");
                     console.log(data);
-                    $("#results").html(formatListenedResults(data))
+                    //$("#results").html(formatListenedResults(data))
+                    $("#results").css("display", "inline-block");
+                    $("#text-results").css("display", "inline-block");
+                    $("#spinner").css("display", "none")
+                    $("#sentiment").text(data["sentiment"]);
+                    $("#language").text(data["language"]);
+                    $("#content-text").text(data["text_content"]);
                 } else {
                     console.log(data);
                     console.log("not ready");
@@ -40,4 +134,4 @@
         });
     })();
 </script>
-{% endblock javascript %}
+{% endblock scripts %}

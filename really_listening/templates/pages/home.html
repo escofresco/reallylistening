@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block css %}
 {{ block.super }}
 <link href="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.css" rel="stylesheet">
@@ -6,86 +7,132 @@
 {% endblock css %}
 
 {% block content %}
-<button id="browse">Select Files</button>
+{# ~~~~~~~~~~~~~~~~~~ WELCOME ~~~~~~~~~~~~~~~~~~~~ #}
+<section class="pt-8 pb-11 pt-md-9 pb-md-12 py-lg-14 bg-light bg-between" style="background-image: url(static/img/illustrations/kingdom-6-cropped.png), url(static/img/illustrations/kingdom-8-cropped.png);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div data-jarallax-element="-10" class="col-12 col-md-10 col-lg-7 text-center" data-aos="fade-up">
 
-{% comment %}
-<div id="drag-drop-area"></div>
+                {# Image mobile resize #}
+                <img data-jarallax-element="-20" data-speed="1" src="static/img/illustrations/kingdom-8.png" alt="..." class="img-fluid mb-6 d-lg-none">
 
-<form id="emptyForm" action="/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">submit</button>
-</form>
+                {# Heading #}
+                <h1 class="display-2 font-weight-bold">
+                    Interacting with audio has
+                     never been easier.
+                </h1>
+
+                {# Subtitle #}
+                <p class="font-size-lg text-muted mb-6 mb-md-8">
+                    Analyze spoken recordings for sentiment and topic, at scale.
+                </p>
+
+                {# Call to action #}
+                <a id="browse" class="btn btn-primary mr-1 lift text-white">
+                    Get started <i class="fe fe-arrow-right ml-3"></i>
+                </a>
+
+                <a href="#!" class="btn btn-primary-soft lift">
+                    Learn more
+                </a>
+
+            </div>
+        </div> {# /row #}
+    </div> {# /container #}
+</section>
+<div class="dashboardContainer"></div>
+
+{# SHAPE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #}
+<div class="position-relative">
+    <div class="shape shape-bottom shape-fluid-x svg-shim text-white">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"/>
+        </svg>
+    </div>
+</div>
+
+{# ~~~~~~~~~~~~~~~~~ SPACING SECTION ~~~~~~~~~~~~~~~~~~~~~~ #}
+<section class="mt-n8">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="50">
+
+            </div>
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <br><br><br><br><br><br><br><br>
+            </div>
+            <div class="col-12 col-md-4" data-aos="fade-up" data-aos-delay="150">
 
 
-<textarea id="chat-log" cols="100" rows="20"></textarea><br/>
-<input id="chat-message-input" type="text" size="100"/><br/>
-<input id="chat-message-submit" type="button" value="Send"/>
-{% endcomment %}
+            </div>
+        </div> {# / row #}
+    </div> {# / container #}
+</section>
+
 {% endblock content %}
 
-{% block javascript %}
+{% block scripts %}
 {{ block.super }}
 <script src="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.js"></script>
 <script src="//transloadit.edgly.net/releases/uppy/robodog/v1.4.1/robodog.min.js"></script>
 <script>
 
-    /* ajax stuff */
-    $("#emptyForm").submit(function (event) {
-        event.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "/",
-            data: {
-                file_url: "asf",
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-            },
-            success: function(data) {
-                window.location.href += data.task_id;
-            }
-        });
+/* ajax stuff */
+$("#emptyForm").submit(function (event) {
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/",
+        data: {
+            file_url: "asf",
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+        },
+        success: function(data) {
+            window.location.href += data.task_id;
+        }
     });
+});
 
-    function startListening(furl) {
-        $.ajax({
-            type: "POST",
-            url: "/",
-            data: {
-                file_url: furl,
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-            },
-            success: function(data) {
-                // Once the task is started, redirect to results page
-                window.location.href += data.task_id;
-            }
-        });
-    }
+function startListening(furl) {
+    $.ajax({
+        type: "POST",
+        url: "/",
+        data: {
+            file_url: furl,
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+        },
+        success: function(data) {
+            // Once the task is started, redirect to results page
+            window.location.href += data.task_id;
+        }
+    });
+}
 
 
-    /*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            TRANSLOADIT
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TRANSLOADIT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-    document.getElementById("browse").addEventListener("click", function () {
-        var uppy = window.Robodog.pick({
-            providers: [ "instagram", "url", "webcam", "dropbox", "google-drive" ],
-            waitForEncoding: true,
-            params: {
-                // TODO: Use Signature Authentication
-                auth: { key: "20ff383b0b2b49a79643d1874edf5a3f" },
-                template_id: "d90b12519a964166ac0aac71b53fc4e0"
-            }
-        }).then(function (bundle) {
-            // Due to `waitForEncoding: true` this is fired after encoding is done.
-            // Alternatively, set `waitForEncoding` to `false` and provide a `notify_url`
-            // for Async Mode where your back-end receives the encoding results
-            // so that your user can be on their way as soon as the upload completes.
-            console.log(bundle.transloadit) // Array of Assembly Statuses
-            console.log(bundle.results)     // Array of all encoding results
+document.getElementById("browse").addEventListener("click", function () {
+    var uppy = window.Robodog.pick({
+        providers: [ "instagram", "url", "webcam", "dropbox", "google-drive" ],
+        waitForEncoding: true,
+        params: {
+            // TODO: Use Signature Authentication
+            auth: { key: "20ff383b0b2b49a79643d1874edf5a3f" },
+            template_id: "d90b12519a964166ac0aac71b53fc4e0"
+        }
+    }).then(function (bundle) {
+        // Due to `waitForEncoding: true` this is fired after encoding is done.
+        // Alternatively, set `waitForEncoding` to `false` and provide a `notify_url`
+        // for Async Mode where your back-end receives the encoding results
+        // so that your user can be on their way as soon as the upload completes.
+        console.log(bundle.transloadit) // Array of Assembly Statuses
+        console.log(bundle.results)     // Array of all encoding results
 
-            // start. that. pipeliiiiinnneee!
-            startListening(bundle.results[0].ssl_url);
-        }).catch(console.error)
-    })
+        // start. that. pipeliiiiinnneee!
+        startListening(bundle.results[0].ssl_url);
+    }).catch(console.error)
+})
 </script>
-{% endblock javascript %}
+{% endblock scripts %}

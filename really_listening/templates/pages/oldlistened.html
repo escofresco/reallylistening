@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block css %}
+{{ block.super }}
+<link href="https://transloadit.edgly.net/releases/uppy/v1.7.0/uppy.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//transloadit.edgly.net/releases/uppy/robodog/v1.4.1/robodog.min.css">
+{% endblock css %}
+{% block content %}
+<div id="results">
+    loading...
+</div>
+{% endblock content %}
+
+{% block javascript %}
+{{ block.super }}
+<script>
+    function formatListenedResults(data) {
+        formatted_elms = [];
+        formatted_elms.push(`<h6>Sentiment: ${data["sentiment"]}</h6>`);
+        formatted_elms.push(`<h6>Language: ${data["language"]}</h6>`);
+        formatted_elms.push(`<p>${data["text_content"]}</p>`);
+        return formatted_elms.join("")
+    }
+
+    (function poll() {
+        $.ajax({
+            type: "POST",
+            url: "/{{ task_id }}/",
+            data: {
+                task_id: "{{ task_id }}",
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            }, success: function(data) {
+                if (data.ready) {
+                    console.log("ready");
+                    console.log(data);
+                    $("#results").html(formatListenedResults(data))
+                } else {
+                    console.log(data);
+                    console.log("not ready");
+                    setTimeout(poll, 5000);
+                }
+            }, error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $("#results").text("Status " + textStatus + " Error: " + errorThrown);
+            }
+        });
+    })();
+</script>
+{% endblock javascript %}
