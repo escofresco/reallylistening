@@ -107,6 +107,10 @@ The following details how to deploy this application.
 
 Heroku
 ^^^^^^
+.. image:: https://www.herokucdn.com/deploy/button.svg
+    :target: https://heroku.com/deploy
+    :alt: Deploy
+    
 
 See detailed `cookiecutter-django Heroku documentation`_.
 
