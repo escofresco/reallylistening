@@ -1,0 +1,6 @@
+{
+  "name": "Really Listening",
+  "description": "A webapp for analyzing spoken audio.",
+  "repository": "https://github.com/escofresco/reallylistening",
+  "keywords": ["django", "aws"]
+}
